@@ -1,3 +1,12 @@
+/*-- 创建一个服务器 --*/
+var http = require('http');
+var serv = http.createServer(function  (req,res) {
+	res.writeHead(200,{"Content-Type":"text/html"});
+	res.end('<p>see it</p>');
+})
+serv.listen(8080);
+
+
 /** 文件操作 **/
 var fs = require('fs');
 var gfiles = 0;
@@ -72,3 +81,25 @@ filests.forEach(function  (file) {
 	}
 })
 
+//客户端请求
+http.request({
+	host:'127.0.0.1',
+	port:3000,
+	url:'/',
+	method:'GET'
+},function  (res) {
+	var body ="";
+	res.setEncoding('utf8');
+	res.on('data',function  (chunk) {
+		body+=chunk;
+	});
+	res.on('end',function  () {
+		console.log("接收完毕"+body);
+	})
+}).end();
+
+
+
+/*-- 自动重启服务器  --*/
+npm install supervisor -g
+supervisor index.js
