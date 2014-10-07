@@ -1,7 +1,16 @@
+var fs = require("fs");
 var http = require('http');
-console.log("请选择你的文件或者路径111");
-var serv = http.createServer(function  (req,res) {
-	res.writeHead(200,{"Content-Type":"text/html"});
-	res.end('<p>changeoidfos it 222</p>');
+var server = http.createServer(function  (req,res) {
+	if ('GET' == req.method && '/' == req.url) {
+		sload(__dirname + '/index.html','text/html');
+	}else {
+		res.writeHead(200,{"Content-Type":"text/html"});
+		res.end('<p>空页面</p>');
+	}
+
+	function sload(path,type) {
+		res.writeHead(200,{"Content-Type":type});
+		fs.createReadStream(path).pipe(res);
+	}
 })
-serv.listen(80);
+server.listen(80);
